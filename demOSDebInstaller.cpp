@@ -73,15 +73,15 @@ void InstallProcess()
 		system("arch-chroot /media/target /bin/bash -c 'mkdir -v /mnt/boottemp && cp -rv /boot /mnt/boottemp'");
 		string mountefiinchroot = "arch-chroot /media/target /bin/bash -c 'mount " + efipart + " /boot'";
 		system(mountefiinchroot.c_str());
-		system("arch-chroot /media/target /bin/bash -c 'cp -rv /mnt/boottemp /boot'");
+		system("arch-chroot /media/target /bin/bash -c 'cp -rv /mnt/boottemp/boot/* /boot'");
 		system("arch-chroot /media/target /bin/bash -c 'apt install grub-efi arch-install-scripts -y'");
-		system("arch-chroot /media/target /bin/bash -c 'genfstab -U / >> /etc/fstab'");
+		system("genfstab -U /media/target >> /media/target/etc/fstab");
 		system("arch-chroot /media/target /bin/bash -c 'grub-install --target=x86_64-efi --efi-directory=/boot --removable'");
 		system("arch-chroot /media/target /bin/bash -c 'grub-install --target=x86_64-efi --efi-directory=/boot --root-directory=/ --bootloader-id=Demencia OS && update-initramfs -u'");
 		//cout << "FIRST COMMAND: You are right now in the new installation of DemenciaOS (chroot).\n put mkdir -v /mnt/boottemp and cp -rv /boot /mnt/boottemp\n" << endl;
 		//cout << "SECOND COMMAND: put mount /dev/sdx1 /boot or /dev/nvme0n1p1 /boot (NVMe) and grub-install --target=x86_64-efi --efi-directory=/boot\n, open an other terminal and login with root with sudo -i or sudo su and write genfstab -U /media/target/ >> /media/target/etc/fstab\n" << endl;
 		//cout << "THIRD COMMAND: put cp -rv /mnt/boottemp/boot/* /boot/  and finally. put update-grub and finally use command to exit. \n " << endl;
-        	cout << "Installation complete you can reboot with sudo reboot or systemctl reboot\n You need start update-initramfs -U in the post installation as root in case you have error with a ln command don't worry about that :D" << endl;
+        	cout << "Installation complete\n You can reboot with sudo reboot or systemctl reboot\n You need start update-initramfs -U in the post installation as root in case you have error with a ln command don't worry about that :D" << endl;
 
 	}
 }
