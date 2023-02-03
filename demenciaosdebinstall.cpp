@@ -109,7 +109,7 @@ void Install()
 				// Si no es asi inicia las ordenes para el modo Legacy (BIOS)
             } else {
                 cout << "Formating partitions" << endl;
-                system(mkRootLegacy.c_str());
+                system(mkRootPart.c_str());
                 cout << rootpart + " it's created sucessfully!" << endl;
                 system("mkdir /media/target");
                 cout << "Mounting partitions...." << endl;

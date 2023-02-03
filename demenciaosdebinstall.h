@@ -19,13 +19,12 @@ string createSwap = "mkswap " + swappart;
 string EnableSwap = "swapon " + swappart;
 string fdiskrun = "cfdisk " + disk;
 string installGRUBLegacy = "grub-install --target=i386-pc --root-directory=/media/target/ " + disk;
-string mountLegacyRoot = "mount -t ext4 " + rootpart + " /media/target";
-string mkRootLegacy = "mkfs.ext4 " + rootpart;
+string mountLegacyRoot = "mount -t ext4 " + rootpart + " /media/target/";
 string runMkdirTargetDir = "mkdir /media/target/";
 string mkBootDir = "mkdir /media/target/boot/";
 string mkEFIpart = "mkfs.vfat -F 32 " + disk=disk+"1";
 string mountEFIpart = "mount " + efipart + " /media/target/boot";
-string mkRootPart = "mkfs.ext4 " + rootpart;
+string mkRootPart = "mkfs -t ext4 " + rootpart;
 string mountRoot = "mount " + rootpart + " /media/target";
 bool usingSwap; // Variable para especificar si se usa la SWAP
 bool isEFI; // Comprobar si la instalación es EFI y no.
