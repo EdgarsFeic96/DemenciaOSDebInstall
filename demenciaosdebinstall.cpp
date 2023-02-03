@@ -1,6 +1,6 @@
 /// Demencia OS Installer by hhk02
 
-#include "demOSInstaller20.h"
+#include "demenciaosdebinstall.h"
 
 using namespace std;
 
