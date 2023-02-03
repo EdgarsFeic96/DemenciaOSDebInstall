@@ -48,9 +48,9 @@ void InstallProcess()
 
 	if(isEFI==false)
 	{
-		system(exec6.c_str());
-                system(exec10.c_str());
-                system(exec12.c_str());
+		//system(exec6.c_str());
+                //system(exec10.c_str());
+                //system(exec12.c_str());
 		system("apt install arch-install-scripts -y ");
 		// Instalar gestor de arrange GRUB en modo legacy
 		cout << "Installing bootloader (grub)" << endl;
@@ -65,9 +65,9 @@ void InstallProcess()
 		cout << "Installation complete!" << endl;
 
     		} else {
-		system(exec6.c_str());
-		system(exec10.c_str());
-		system(exec12.c_str());
+		//system(exec6.c_str());
+		//system(exec10.c_str());
+		//system(exec12.c_str());
         	//string execeficmd = "bootctl install --esp-path=/media/target/boot";
 		system("apt install arch-install-scripts grub-efi efibootmgr -y ");
 		system("arch-chroot /media/target /bin/bash -c mkdir -v /mnt/boottemp && cp -rv /boot /mnt/boottemp");
