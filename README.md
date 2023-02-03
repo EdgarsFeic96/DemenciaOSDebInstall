@@ -7,5 +7,5 @@ To avoid some kind of incompatibility with the other script based on Ubuntu.
 
 # How to use?
 
-`` g++ demenciaosdebinstall.cpp -o demenciaosdebinstall ``
+`` g++ demOSDebInstaller.cpp -o demenciaosdebinstall ``
 `` sudo ./demenciaosdebinstall ``
