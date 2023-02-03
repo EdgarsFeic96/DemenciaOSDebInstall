@@ -109,10 +109,10 @@ void Install()
     else {
             try {
 		// Iniciar CFDISK
-                cout << "Enter to cfdisk " + disk << endl;
-		//string runapt = "apt install gparted -y";
-		//system(runapt.c_str());
-                string fdiskrun = "cfdisk " + disk;
+                cout << "Enter to gparted " + disk << endl;
+		string runapt = "apt install gparted -y";
+		system(runapt.c_str());
+                string fdiskrun = "gparted " + disk;
                 system(fdiskrun.c_str());
                 cout << "OK" << endl;
 		cout << "You do want use SWAP? (yes/no)" << endl;
