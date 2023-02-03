@@ -59,9 +59,9 @@ void InstallProcess()
         	//cout << "Use genfstab -U /media/target/ >> /media/target/etc/fstab in the other termianl.\n Then run update-initramfs -u in the same terminal where you ran the installer. \n and finally in the same window of the installer write update-grub\n" << endl;
 		string installgrublegacy = "arch-chroot /media/target 'grub-install --target=i386-pc --boot-directory=/boot'" + disk;
 		system(installgrublegacy.c_str());
-		system("arch-chroot /media/target 'update-grub'");
+		system("arch-chroot /media/target /bin/bash -c 'update-grub'");
 		system("genfstab -U /media/target >> /media/target/etc/fstab");
-		system("arch-chroot /media/target 'update-initramfs -u'");
+		system("arch-chroot /media/target /bin/bash -c 'update-initramfs -u'");
 		cout << "Installation complete!" << endl;
 
     		} else {
@@ -70,11 +70,11 @@ void InstallProcess()
 		//system(exec12.c_str());
         	//string execeficmd = "bootctl install --esp-path=/media/target/boot";
 		system("apt install arch-install-scripts grub-efi efibootmgr -y ");
-		system("arch-chroot /media/target + 'mkdir -v /mnt/boottemp && cp -rv /boot /mnt/boottemp'");
-        string mountefiinchroot = "'arch-chroot /media/target mount' " + efipart + "/boot'";
+		system("arch-chroot /media/target /bin/bash -c 'mkdir -v /mnt/boottemp && cp -rv /boot /mnt/boottemp'");
+        	string mountefiinchroot = "'arch-chroot /media/target /bin/bash -c mount' " + efipart + "/boot'";
 		system(mountefiinchroot.c_str());
-		system("arch-chroot /media/target 'grub-install --target=x86_64-efi --efi-directory=/boot --removable'");
-		system("arch-chroot /media/target 'grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Demencia OS && update-initramfs -u'");
+		system("arch-chroot /media/target /bin/bash -c 'grub-install --target=x86_64-efi --efi-directory=/boot --removable'");
+		system("arch-chroot /media/target /bin/bash -c 'grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Demencia OS && update-initramfs -u'");
 		//cout << "FIRST COMMAND: You are right now in the new installation of DemenciaOS (chroot).\n put mkdir -v /mnt/boottemp and cp -rv /boot /mnt/boottemp\n" << endl;
 		//cout << "SECOND COMMAND: put mount /dev/sdx1 /boot or /dev/nvme0n1p1 /boot (NVMe) and grub-install --target=x86_64-efi --efi-directory=/boot\n, open an other terminal and login with root with sudo -i or sudo su and write genfstab -U /media/target/ >> /media/target/etc/fstab\n" << endl;
 		//cout << "THIRD COMMAND: put cp -rv /mnt/boottemp/boot/* /boot/  and finally. put update-grub and finally use command to exit. \n " << endl;
