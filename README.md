@@ -9,5 +9,7 @@ To avoid some kind of incompatibility with the other script based on Ubuntu.
 
 ``
 g++ demOSDebInstaller.cpp -o demOSDebInstaller
+``
+``
 sudo ./demOSDebInstaller
 ``
