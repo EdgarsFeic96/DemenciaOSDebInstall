@@ -70,9 +70,9 @@ void InstallProcess()
 		//system(exec12.c_str());
         	//string execeficmd = "bootctl install --esp-path=/media/target/boot";
 		system("apt install arch-install-scripts grub-efi efibootmgr -y ");
-		system("arch-chroot /media/target 'mkdir -v /mnt/boottemp && cp -rv /boot /mnt/boottemp'");
-        string mountefiinchroot = "arch-chroot /media/target 'mount' + "efipart" + /boot";
-		system(mountefiinchroot.c_str() + );
+		system("arch-chroot /media/target + 'mkdir -v /mnt/boottemp && cp -rv /boot /mnt/boottemp'");
+        string mountefiinchroot = "'arch-chroot /media/target mount' " + efipart + "/boot'";
+		system(mountefiinchroot.c_str());
 		system("arch-chroot /media/target 'grub-install --target=x86_64-efi --efi-directory=/boot --removable'");
 		system("arch-chroot /media/target 'grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Demencia OS && update-initramfs -u'");
 		//cout << "FIRST COMMAND: You are right now in the new installation of DemenciaOS (chroot).\n put mkdir -v /mnt/boottemp and cp -rv /boot /mnt/boottemp\n" << endl;
