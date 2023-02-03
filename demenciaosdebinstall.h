@@ -1,5 +1,5 @@
-#ifndef DEMOSINSTALLER20_H_INCLUDED
-#define DEMOSINSTALLER20_H_INCLUDED
+#ifndef DEMENCIAOSDEBINSTALL_H_INCLUDED
+#define DEMENCIAOSDEBINSTALL_H_INCLUDED
 
 #include <iostream>
 #include <stdlib.h>
@@ -63,4 +63,4 @@ void MakeSwap()
 	system(createSwap.c_str());
 	system(EnableSwap.c_str());
 }
-#endif // DEMOSINSTALLER20_H_INCLUDED
+#endif // DEMENCIAOSDEBINSTALL
