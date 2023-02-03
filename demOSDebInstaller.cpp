@@ -39,7 +39,7 @@ void InstallProcess()
 	string exec6 = "mount --bind /proc/ /media/target/proc/";
     	string exec10 = "mount --bind /sys/ /media/target/sys/";
     	string exec12 = "mount --bind /dev/ /media/target/dev/";
-	
+
 	if (usingSwap == false)
 	{
 		// Eliminar este archivo para evitar el error: /scripts/local-block
@@ -54,10 +54,11 @@ void InstallProcess()
 		system("apt install arch-install-scripts -y ");
 		// Instalar gestor de arrange GRUB en modo legacy
 		cout << "Installing bootloader (grub)" << endl;
-		
+
 		// Cambiar a la instalación de destino y ejecutar update-grub para generar la configuración del GRUB
         	//cout << "Use genfstab -U /media/target/ >> /media/target/etc/fstab in the other termianl.\n Then run update-initramfs -u in the same terminal where you ran the installer. \n and finally in the same window of the installer write update-grub\n" << endl;
-		system("arch-chroot /media/target /bin/bash -c grub-install --target=i386-pc --root-directory=/ " + disk);
+		string installgrublegacy = "arch-chroot /media/target /bin/bash -c grub-install --target=i386-pc --root-directory=/ " + disk;
+		system(installgrublegacy.c_str());
 		system("arch-chroot /media/target /bin/bash -c update-grub");
 		system("genfstab -U /media/target >> /media/target/etc/fstab");
 		system("arch-chroot /media/target /bin/bash -c update-initramfs -u");
@@ -70,7 +71,8 @@ void InstallProcess()
         	//string execeficmd = "bootctl install --esp-path=/media/target/boot";
 		system("apt install arch-install-scripts grub-efi efibootmgr -y ");
 		system("arch-chroot /media/target /bin/bash -c mkdir -v /mnt/boottemp && cp -rv /boot /mnt/boottemp");
-		system("arch-chroot /media/target /bin/bash -c mount " + efipart + "/boot");
+        string mountefiinchroot = "arch-chroot /media/target /bin/bash -c mount " + efipart + "/boot";
+		system(mountefiinchroot.c_str());
 		system("arch-chroot /media/target /bin/bash -c grub-install --target=x86_64-efi --efi-directory=/boot --removable");
 		system("arch-chroot /media/target /bin/bash -c grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Demencia OS && update-initramfs -u");
 		//cout << "FIRST COMMAND: You are right now in the new installation of DemenciaOS (chroot).\n put mkdir -v /mnt/boottemp and cp -rv /boot /mnt/boottemp\n" << endl;
@@ -152,7 +154,7 @@ void Install()
                     			} else {
                         			disk = disk;
                     			}
-					
+
 					// Ejecutar metodos para el EFI
 					string runMkdirTargetDir = "mkdir /media/target/";
     					string exec0 = "mkdir /media/target/boot/";
