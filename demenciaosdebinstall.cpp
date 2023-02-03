@@ -2,6 +2,9 @@
 
 #include "demenciaosdebinstall.h"
 
+#include <iostream>
+#include <stdlib.h>
+
 using namespace std;
 
 // system(): Esta función nos permite ejecutar programas de linea de comandos.
@@ -48,8 +51,6 @@ void Install()
     cout << "Write you disk here: " << endl;
     cin >> disk;
 
-    while (true)
-    {
     if(disk=="")
     {
         Install();
@@ -113,7 +114,8 @@ void Install()
                 cout << rootpart + " it's created sucessfully!" << endl;
                 system("mkdir /media/target");
                 cout << "Mounting partitions...." << endl;
-                system(mountLegacyRoot.c_str());
+                system(mountRoot.c_str());
+                InstallProcess();
                 }
 
             if (usingSwap==true)
@@ -131,7 +133,6 @@ void Install()
             }
             }
 }
-    }
 
 // Metodo inicial
 int main()

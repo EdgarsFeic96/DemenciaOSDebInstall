@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <stdlib.h>
-#include <string>
 
 using namespace std;
 
@@ -22,7 +21,7 @@ string installGRUBLegacy = "grub-install --target=i386-pc --root-directory=/medi
 string mountLegacyRoot = "mount " + rootpart + " /media/target/";
 string runMkdirTargetDir = "mkdir /media/target/";
 string mkBootDir = "mkdir /media/target/boot/";
-string mkEFIpart = "mkfs.vfat -F 32 " + disk=disk+"1";
+string mkEFIpart = "mkfs.vfat -F 32 " + efipart;
 string mountEFIpart = "mount " + efipart + " /media/target/boot";
 string mkRootPart = "mkfs.ext4 " + rootpart;
 string mountRoot = "mount " + rootpart + " /media/target";
