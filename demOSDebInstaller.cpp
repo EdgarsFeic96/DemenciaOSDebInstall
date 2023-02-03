@@ -39,6 +39,12 @@ void InstallProcess()
 	string exec6 = "mount --bind /proc/ /media/target/proc/";
     	string exec10 = "mount --bind /sys/ /media/target/sys/";
     	string exec12 = "mount --bind /dev/ /media/target/dev/";
+	
+	if (usingSwap == false)
+	{
+		// Eliminar este archivo para evitar el error: /scripts/local-block
+		system("rm /media/target/etc/initramfs-tools/conf.d/resume");
+	}
 
 	if(isEFI==false)
 	{
@@ -51,6 +57,11 @@ void InstallProcess()
 		// Comando grub-install --target=i386-pc (modo legacy) --root=directry= (ruta de punto de montaje)
     		string exec5 = "grub-install --target=i386-pc --root-directory=/media/target/ " + disk;
     		system(exec5.c_str());
+		if (usingSwap == false)
+		{
+			// Eliminar este archivo para evitar el error: /scripts/local-block
+			system("rm /media/target/etc/initramfs-tools/conf.d/resume");
+		}
 		// Cambiar a la instalación de destino y ejecutar update-grub para generar la configuración del GRUB
         	cout << "Use genfstab -U /media/target/ >> /media/target/etc/fstab in the other termianl.\n Then run update-initramfs -u in the same terminal where you ran the installer. \n and finally in the same window of the installer write update-grub\n" << endl;
 		system("chroot /media/target");
