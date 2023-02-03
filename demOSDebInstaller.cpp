@@ -57,28 +57,24 @@ void InstallProcess()
 		// Comando grub-install --target=i386-pc (modo legacy) --root=directry= (ruta de punto de montaje)
     		string exec5 = "grub-install --target=i386-pc --root-directory=/media/target/ " + disk;
     		system(exec5.c_str());
-		if (usingSwap == false)
-		{
-			// Eliminar este archivo para evitar el error: /scripts/local-block
-			system("rm /media/target/etc/initramfs-tools/conf.d/resume");
-		}
+		
 		// Cambiar a la instalación de destino y ejecutar update-grub para generar la configuración del GRUB
         	cout << "Use genfstab -U /media/target/ >> /media/target/etc/fstab in the other termianl.\n Then run update-initramfs -u in the same terminal where you ran the installer. \n and finally in the same window of the installer write update-grub\n" << endl;
 		system("chroot /media/target");
 		cout << "Installation complete!" << endl;
 
-    	} else {
+    		} else {
 		system(exec6.c_str());
 		system(exec10.c_str());
 		system(exec12.c_str());
         	//string execeficmd = "bootctl install --esp-path=/media/target/boot";
 		system("apt install arch-install-scripts grub-efi -y ");
-		system("clear");
+		system("grub-install --target=x86_64-efi --efi-directory=/media/target/boot --root-directory=/media/target/ --removable");
 		cout << "FIRST COMMAND: You are right now in the new installation of DemenciaOS (chroot).\n put mkdir -v /mnt/boottemp and cp -rv /boot /mnt/boottemp\n" << endl;
 		cout << "SECOND COMMAND: put mount /dev/sdx1 /boot or /dev/nvme0n1p1 /boot (NVMe) and grub-install --target=x86_64-efi --efi-directory=/boot\n, open an other terminal and login with root with sudo -i or sudo su and write genfstab -U /media/target/ >> /media/target/etc/fstab\n" << endl;
-		cout << "THIRD COMMAND: put cp -rv /mnt/boottemp/boot/* /boot/ Then run update-initramfs -u in the same terminal where you ran the installer. and finally. put update-grub and finally use command to exit. \n " << endl;
+		cout << "THIRD COMMAND: put cp -rv /mnt/boottemp/boot/* /boot/  and finally. put update-grub and finally use command to exit. \n " << endl;
 		system("chroot /media/target");
-        	cout << "Installation complete you can reboot with sudo reboot or systemctl reboot" << endl;
+        	cout << "Installation complete you can reboot with sudo reboot or systemctl reboot\n You need start update-initramfs -U in the post installation as root in case you have error with a ln command don't worry about that :D" << endl;
 
 	}
 }
