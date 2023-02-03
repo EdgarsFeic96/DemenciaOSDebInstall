@@ -48,74 +48,82 @@ void Install()
     cout << "Write you disk here: " << endl;
     cin >> disk;
 
+    while (true)
+    {
     if(disk=="")
     {
         Install();
     }
     else {
             try {
-                // Iniciar CFDISK
-                cout << "Enter to cfdisk " + disk << endl;
-                //string runapt = "apt install gparted -y";
-                //system(runapt.c_str());
-                system(fdiskrun.c_str());
-                cout << "OK" << endl;
-                cout << "You do want use SWAP? (yes/no)" << endl;
-                cin >> swapoption;
-                cout << "Is EFI? (yes/no)" << endl;
-                cin >> efioption;
-                // Comprobar si es EFI o no
-                if (efioption=="yes")
-                {
-                    isEFI = true;
-                    cout << "EFI Partition: " << endl;
-                    cin >> efipart;
-                }
-                else {
-                    isEFI = false;
-                }
+
+            if (startsWith(disk,"/dev/nvme0n1"))
+            {
+            disk = disk + "p";
+            }
+            else {
+            disk = disk;
+            }
+            cout << "Enter to cfdisk " + disk << endl;
+
+            //string runapt = "apt install gparted -y";
+            //system(runapt.c_str());
+            system(fdiskrun.c_str());
+            cout << "OK" << endl;
+            cout << "You do want use SWAP? (yes/no)" << endl;
+            cin >> swapoption;
+            cout << "Is EFI? (yes/no)" << endl;
+            cin >> efioption;
+            // Comprobar si es EFI o no
+            if (efioption=="yes")
+            {
+               isEFI = true;
+               cout << "EFI Partition: " << endl;
+               cin >> efipart;
+            }
+            else {
+                 isEFI = false;
+            }
                 // Comprobar si usa la swap o no
-                if (swapoption=="yes")
-                {
-                    usingSwap=true;
-                }
-                else {
-                    usingSwap=false;
-                }
-                // Comprobar si es EFI o no
-				if(isEFI == true)
-				{
-					if (startsWith(disk,"/dev/nvme0n1"))
-                    {
-                        disk = disk + "p";
-                    } else {
-                        disk = disk;
-                    }
-					// Ejecutar metodos para el EFI
-                    cout << "Making partitions" << endl;
-					system(runMkdirTargetDir.c_str());
-					system(mkBootDir.c_str());
-					system(mkEFIpart.c_str());
-					system(mkRootPart.c_str());
-					system(mountRoot.c_str());
-					cout << "Success!" << endl;
-					InstallProcess();
+            if (swapoption=="yes")
+            {
+                usingSwap=true;
+            }
+            else {
+                usingSwap=false;
+            }
+            cout << "Root partition: " << endl;
+            cin >> rootpart;
+            // Comprobar si es EFI o no
+            if(isEFI == true)
+            {
+            // Ejecutar metodos para el EFI
+                cout << "Making partitions" << endl;
+				system(runMkdirTargetDir.c_str());
+				system(mkBootDir.c_str());
+				system(mkEFIpart.c_str());
+                system(mkRootPart.c_str());
+                system(mountRoot.c_str());
+                cout << "Success!" << endl;
+                InstallProcess();
 				// Si no es asi inicia las ordenes para el modo Legacy (BIOS)
-				} else {
-					cout << "Formating partitions" << endl;
-					system(mkRootLegacy.c_str());
-					cout << rootpart + " it's created sucessfully!" << endl;
-					system("mkdir /media/target");
-					cout << "Mounting partitions...." << endl;
-					system(mountLegacyRoot.c_str());
-				if (usingSwap==true){
-					cout << "Please specify the swap partition ex: /dev/sda3" << endl;
-					cin >> swappart;
-					cout << "Creating swap" << endl;
-					MakeSwap();
-					cout << "Swap created sucessfully" << endl;
-				}
-				}
+            } else {
+                cout << "Formating partitions" << endl;
+                system(mkRootLegacy.c_str());
+                cout << rootpart + " it's created sucessfully!" << endl;
+                system("mkdir /media/target");
+                cout << "Mounting partitions...." << endl;
+                system(mountLegacyRoot.c_str());
+                }
+
+            if (usingSwap==true)
+            {
+            cout << "Please specify the swap partition ex: /dev/sda3" << endl;
+            cin >> swappart;
+            cout << "Creating swap" << endl;
+            MakeSwap();
+            cout << "Swap created sucessfully" << endl;
+            }
             }
             catch (string ex)
             {
@@ -123,6 +131,8 @@ void Install()
             }
             }
 }
+    }
+
 // Metodo inicial
 int main()
 {
