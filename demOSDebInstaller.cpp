@@ -7,7 +7,7 @@
 using namespace std;
 
 //Variables
-int option; // Variable que guara la opcion elegida del inicio
+int option; // Variable que guarda la opcion elegida del inicio
 string swapoption; // Opcion donde se guarda si quieres la swap o no
 string disk; // Variable donde se almacena el disco de destino
 string efipart; // Variable donde se almacena la partición EFI
