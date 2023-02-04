@@ -36,12 +36,13 @@ void GenerateLocaleFile()
     	}
     	else {
         	cout << "Language seleccted: " + languagekeyboard << endl;
-		string localeset = "arch-chroot /media/target /bin/bash -c 'echo " + "LANG="+languagekeyboard + ".UTF8 " + " > " + "/etc/locale.conf'";
+		string localeset = "arch-chroot /media/target /bin/bash -c 'echo LANG="+languagekeyboard + ".UTF8 " + " > " + "/etc/locale.conf'";
 		string localeset1 = "arch-chroot /media/target /bin/bash -c 'echo " + languagekeyboard + " >> " + "/etc/locale.gen'";
 		system(localeset.c_str());
 		system(localeset1.c_str());
 		string localecmd = "arch-chroot /media/target /bin/bash -c 'locale-gen' ";
 		system(localecmd.c_str());
+	}
 	
 }
 
