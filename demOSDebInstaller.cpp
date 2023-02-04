@@ -7,6 +7,10 @@
 using namespace std;
 
 //Variables
+string user;
+bool ineeduser;
+string password;
+bool issudoer;
 int option; // Variable que guarda la opcion elegida del inicio
 string swapoption; // Opcion donde se guarda si quieres la swap o no
 string disk; // Variable donde se almacena el disco de destino
@@ -16,6 +20,32 @@ string swappart; // Variable donde se almacena la partición SWAP
 string efioption; // Variable para especificar si es una instalación EFI o no.
 bool usingSwap; // Variable para especificar si se usa la SWAP
 bool isEFI; // Comprobar si la instalación es EFI y no.
+string languagekeyboard;
+
+void CreateUser()
+{
+    cout << "Creating user: " + user;
+    string usercmd = "arch-choot /media/target /bin/bash -c 'useradd -m' " + user;
+    string pwdcmd = "arch-choot /media/target /bin/bash -c 'passwd' " + password;
+
+    system(usercmd.c_str());
+    system(pwdcmd.c_str());
+
+    cout << "You need this user is sudo?" << endl;
+    cin >> issudoer;
+    if (issudoer)
+    {
+        string sudocmd = "arch-choot /media/target /bin/bash -c 'usermod -aG sudo' " + user;
+        system(sudocmd.c_str());
+    }
+    else
+    {
+        issudoer=false;
+    }
+}
+
+
+
 
 bool empieza_con(std::string primera_str, std::string str_objetivo)
 {
@@ -31,6 +61,7 @@ bool empieza_con(std::string primera_str, std::string str_objetivo)
 // Metodo de proceso de instalación
 void InstallProcess()
 {
+    string languageselected = "arch-chroot /media/target /bin/bash -c 'echo' " + languagekeyboard+".UTF-8 UTF-8 " + ">>" + "/etc/locale.gen'";
     cout << "Installing...." << endl;
 	// Descomprimir el archivo squashfs RESPONSABLE de descomprimir el sistema en el destino
 	string exec4 = "unsquashfs -f -d /media/target/ /run/live/medium/live/filesystem.squashfs";
@@ -63,6 +94,10 @@ void InstallProcess()
 		system("genfstab -U /media/target >> /media/target/etc/fstab");
 		system("arch-chroot /media/target /bin/bash -c 'update-initramfs -u'");
 		cout << "Installation complete!" << endl;
+		cout << "You like create a new user? (yes/no)" << endl;
+        cin >> ineeduser;
+
+
 
     		} else {
 		//system(exec6.c_str());
@@ -87,6 +122,7 @@ void InstallProcess()
 }
 
 
+
 // Metodo para crear la particion SWAP.
 void MakeSwap()
 {
@@ -97,6 +133,7 @@ void MakeSwap()
 }
 
 // // Metodo al iniciar el menu de 1.- Install
+
 void Install()
 {
     system("clear");
@@ -204,6 +241,24 @@ void Install()
             }
             }
 }
+
+void Setup()
+{
+    cout << "What language you need for the keyboard? ex: es_MX" << endl;
+    cin >> languagekeyboard;
+
+    if(languagekeyboard=="")
+    {
+        Setup();
+    }
+    else {
+        cout << "Language seleccted: " + languagekeyboard << endl;
+        languagekeyboard = languagekeyboard;
+        Install();
+    }
+}
+
+
 // Metodo inicial
 int main()
 {
@@ -225,6 +280,6 @@ int main()
 
     if (option==1)
     {
-        Install();
+        Setup();
     }
 }
