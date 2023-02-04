@@ -64,7 +64,7 @@ void AnswerCreateUser()
 	cout << "You like create a new user? (yes/no)" << endl;
        	cin >> ineeduser;
 	
-	if (ineeduser=="yes")
+	if (ineeduser="yes")
 	{
 		CreateUser();
 	}
