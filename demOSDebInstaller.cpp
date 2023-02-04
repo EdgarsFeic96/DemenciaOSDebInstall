@@ -27,8 +27,21 @@ string languagekeyboard;
 
 void GenerateLocaleFile()
 {
-	string localecmd = "arch-chroot /media/target /bin/bash -c 'locale-gen' ";
-	system(localecmd.c_str());
+	cout << "What language you need for the keyboard? ex: es_MX" << endl;
+    	cin >> languagekeyboard;
+
+    	if(languagekeyboard=="")
+    	{
+        	GenerateLocaleFile();
+    	}
+    	else {
+        	cout << "Language seleccted: " + languagekeyboard << endl;
+		string localeset = "arch-chroot /media/target /bin/bash -c 'echo " + "LANG="+languagekeyboard + ".UTF8 " + " > " + "/etc/locale.conf'";
+		string localeset1 = "arch-chroot /media/target /bin/bash -c 'echo " + languagekeyboard + " >> " + "/etc/locale.gen'";
+		system(localeset.c_str());
+		system(localeset1.c_str());
+		string localecmd = "arch-chroot /media/target /bin/bash -c 'locale-gen' ";
+		system(localecmd.c_str());
 	
 }
 
@@ -40,8 +53,8 @@ void CreateUser()
 	cin >> password;
 	
     	cout << "Creating user: " + user;
-    	string usercmd = "arch-choot /media/target /bin/bash -c 'useradd -m' " + user;
-    	string pwdcmd = "arch-choot /media/target /bin/bash -c 'passwd' " + password;
+    	string usercmd = "arch-chroot /media/target /bin/bash -c 'useradd -m' " + user;
+    	string pwdcmd = "arch-chroot /media/target /bin/bash -c 'passwd' " + password;
 
     	system(usercmd.c_str());
     	system(pwdcmd.c_str());
@@ -88,7 +101,6 @@ bool empieza_con(std::string primera_str, std::string str_objetivo)
 // Metodo de proceso de instalación
 void InstallProcess()
 {
-    string languageselected = "arch-chroot /media/target /bin/bash -c 'echo' " + languagekeyboard+".UTF-8 UTF-8 " + ">>" + "/etc/locale.gen'";
     cout << "Installing...." << endl;
 	// Descomprimir el archivo squashfs RESPONSABLE de descomprimir el sistema en el destino
 	string exec4 = "unsquashfs -f -d /media/target/ /run/live/medium/live/filesystem.squashfs";
@@ -271,23 +283,6 @@ void Install()
             }
 }
 
-void Setup()
-{
-    cout << "What language you need for the keyboard? ex: es_MX" << endl;
-    cin >> languagekeyboard;
-
-    if(languagekeyboard=="")
-    {
-        Setup();
-    }
-    else {
-        cout << "Language seleccted: " + languagekeyboard << endl;
-        languagekeyboard = languagekeyboard;
-        Install();
-    }
-}
-
-
 // Metodo inicial
 int main()
 {
@@ -309,6 +304,6 @@ int main()
 
     if (option==1)
     {
-        Setup();
+        Install();
     }
 }
