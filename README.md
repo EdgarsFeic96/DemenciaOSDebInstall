@@ -7,6 +7,6 @@ To avoid some kind of incompatibility with the other script based on Ubuntu.
 
 # How to use?
 
-``make``
+``make`` Thanks to Edgar for the Makefile
 
 `` sudo ./demOSDebInstaller ``
