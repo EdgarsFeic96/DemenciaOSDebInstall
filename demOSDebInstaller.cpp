@@ -27,6 +27,7 @@ string languagekeyboard;
 
 void GenerateLocaleFile()
 {
+	string exec4 = "mount " + rootpart + " /media/target";
 	cout << "What language you need for the keyboard? ex: es_MX" << endl;
     	cin >> languagekeyboard;
 
@@ -35,6 +36,7 @@ void GenerateLocaleFile()
         	GenerateLocaleFile();
     	}
     	else {
+		system(exec4.c_str());
         	cout << "Language seleccted: " + languagekeyboard << endl;
 		string localeset = "arch-chroot /media/target /bin/bash -c 'echo LANG="+languagekeyboard + ".UTF8 " + " > " + "/etc/locale.conf'";
 		string localeset1 = "arch-chroot /media/target /bin/bash -c 'echo " + languagekeyboard + " >> " + "/etc/locale.gen'";
@@ -133,6 +135,8 @@ void InstallProcess()
 		system("arch-chroot /media/target /bin/bash -c 'update-grub'");
 		system("genfstab -U /media/target >> /media/target/etc/fstab");
 		system("arch-chroot /media/target /bin/bash -c 'update-initramfs -u'");
+		system("umount /media/target/boot");
+		system("umount /media/target/");
 		GenerateLocaleFile();
 		AnswerCreateUser();
 		cout << "Installation complete!" << endl;
