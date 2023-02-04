@@ -22,26 +22,39 @@ bool usingSwap; // Variable para especificar si se usa la SWAP
 bool isEFI; // Comprobar si la instalación es EFI y no.
 string languagekeyboard;
 
+
+void GenerateLocaleFile()
+{
+	string localecmd = "arch-choot /media/target /bin/bash -c 'locale.gen' ";
+	system(localecmd.c_str());
+}
+	
+
 void CreateUser()
 {
-    cout << "Creating user: " + user;
-    string usercmd = "arch-choot /media/target /bin/bash -c 'useradd -m' " + user;
-    string pwdcmd = "arch-choot /media/target /bin/bash -c 'passwd' " + password;
+	cout << "Username : " << endl;
+	cin >> user;
+	cout << "Password : " << endl;
+	cin >> password;
+	
+    	cout << "Creating user: " + user;
+    	string usercmd = "arch-choot /media/target /bin/bash -c 'useradd -m' " + user;
+    	string pwdcmd = "arch-choot /media/target /bin/bash -c 'passwd' " + password;
 
-    system(usercmd.c_str());
-    system(pwdcmd.c_str());
+    	system(usercmd.c_str());
+    	system(pwdcmd.c_str());
 
-    cout << "You need this user is sudo?" << endl;
-    cin >> issudoer;
-    if (issudoer)
-    {
-        string sudocmd = "arch-choot /media/target /bin/bash -c 'usermod -aG sudo' " + user;
-        system(sudocmd.c_str());
-    }
-    else
-    {
-        issudoer=false;
-    }
+    	cout << "You need this user is sudo?" << endl;
+    	cin >> issudoer;
+    	if (issudoer)
+    	{
+        	string sudocmd = "arch-choot /media/target /bin/bash -c 'usermod -aG sudo' " + user;
+        	system(sudocmd.c_str());
+    	}
+    	else
+    	{
+        	issudoer=false;
+    	}
 }
 
 
@@ -93,9 +106,10 @@ void InstallProcess()
 		system("arch-chroot /media/target /bin/bash -c 'update-grub'");
 		system("genfstab -U /media/target >> /media/target/etc/fstab");
 		system("arch-chroot /media/target /bin/bash -c 'update-initramfs -u'");
+		GenerateLocaleFile();
 		cout << "Installation complete!" << endl;
 		cout << "You like create a new user? (yes/no)" << endl;
-        cin >> ineeduser;
+       		cin >> ineeduser;
 
 
 
@@ -116,7 +130,10 @@ void InstallProcess()
 		//cout << "FIRST COMMAND: You are right now in the new installation of DemenciaOS (chroot).\n put mkdir -v /mnt/boottemp and cp -rv /boot /mnt/boottemp\n" << endl;
 		//cout << "SECOND COMMAND: put mount /dev/sdx1 /boot or /dev/nvme0n1p1 /boot (NVMe) and grub-install --target=x86_64-efi --efi-directory=/boot\n, open an other terminal and login with root with sudo -i or sudo su and write genfstab -U /media/target/ >> /media/target/etc/fstab\n" << endl;
 		//cout << "THIRD COMMAND: put cp -rv /mnt/boottemp/boot/* /boot/  and finally. put update-grub and finally use command to exit. \n " << endl;
-        	cout << "Installation complete\n You can reboot with sudo reboot or systemctl reboot\n You need start update-initramfs -U in the post installation as root in case you have error with a ln command don't worry about that :D" << endl;
+        	GenerateLocaleFile()
+		cout << "You like create a new user? (yes/no)" << endl;
+       		cin >> ineeduser;
+		cout << "Installation complete\n You can reboot with sudo reboot or systemctl reboot\n You need start update-initramfs -U in the post installation as root in case you have error with a ln command don't worry about that :D" << endl;
 
 	}
 }
