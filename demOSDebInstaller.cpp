@@ -25,10 +25,10 @@ string languagekeyboard;
 
 void GenerateLocaleFile()
 {
-	string localecmd = "arch-choot /media/target /bin/bash -c 'locale.gen' ";
+	string localecmd = "arch-chroot /media/target /bin/bash -c 'locale.gen' ";
 	system(localecmd.c_str());
-}
 	
+}
 
 void CreateUser()
 {
