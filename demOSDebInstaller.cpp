@@ -23,9 +23,11 @@ bool isEFI; // Comprobar si la instalación es EFI y no.
 string languagekeyboard;
 
 
+
+
 void GenerateLocaleFile()
 {
-	string localecmd = "arch-chroot /media/target /bin/bash -c 'locale.gen' ";
+	string localecmd = "arch-chroot /media/target /bin/bash -c 'locale-gen' ";
 	system(localecmd.c_str());
 	
 }
@@ -57,7 +59,19 @@ void CreateUser()
     	}
 }
 
-
+void AnswerCreateUser()
+{
+	cout << "You like create a new user? (yes/no)" << endl;
+       	cin >> ineeduser;
+	
+	if (ineeduser=="yes")
+	{
+		CreateUser();
+	}
+	else {
+		cout << "OK. not needed users." << endl;
+	}
+}
 
 
 bool empieza_con(std::string primera_str, std::string str_objetivo)
@@ -107,10 +121,9 @@ void InstallProcess()
 		system("genfstab -U /media/target >> /media/target/etc/fstab");
 		system("arch-chroot /media/target /bin/bash -c 'update-initramfs -u'");
 		GenerateLocaleFile();
+		AnswerCreateUser();
 		cout << "Installation complete!" << endl;
-		cout << "You like create a new user? (yes/no)" << endl;
-       		cin >> ineeduser;
-
+		
 
 
     		} else {
@@ -131,8 +144,7 @@ void InstallProcess()
 		//cout << "SECOND COMMAND: put mount /dev/sdx1 /boot or /dev/nvme0n1p1 /boot (NVMe) and grub-install --target=x86_64-efi --efi-directory=/boot\n, open an other terminal and login with root with sudo -i or sudo su and write genfstab -U /media/target/ >> /media/target/etc/fstab\n" << endl;
 		//cout << "THIRD COMMAND: put cp -rv /mnt/boottemp/boot/* /boot/  and finally. put update-grub and finally use command to exit. \n " << endl;
         	GenerateLocaleFile();
-		cout << "You like create a new user? (yes/no)" << endl;
-       		cin >> ineeduser;
+		AnswerCreateUser();
 		cout << "Installation complete\n You can reboot with sudo reboot or systemctl reboot\n You need start update-initramfs -U in the post installation as root in case you have error with a ln command don't worry about that :D" << endl;
 
 	}
