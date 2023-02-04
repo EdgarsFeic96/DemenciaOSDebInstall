@@ -6,7 +6,7 @@ using namespace std;
 
 //Variables
 string user;
-bool ineeduser;
+string ineeduser;
 string password;
 bool issudoer;
 int option; // Variable que guarda la opcion elegida del inicio
@@ -23,66 +23,56 @@ string languagekeyboard;
 
 
 
-void GenerateLocaleFile()
-{
+void GenerateLocaleFile() {
 	string exec4 = "mount " + rootpart + " /media/target";
 	cout << "What language you need for the keyboard? ex: es_MX" << endl;
-    	cin >> languagekeyboard;
+	cin >> languagekeyboard;
 
-    	if(languagekeyboard=="")
-    	{
-        	GenerateLocaleFile();
-    	}
-    	else {
+	if (languagekeyboard == "") {
+		GenerateLocaleFile();
+	} else {
 		system(exec4.c_str());
-        	cout << "Language seleccted: " + languagekeyboard << endl;
-		string localeset = "arch-chroot /media/target /bin/bash -c 'echo LANG="+languagekeyboard + ".UTF8 " + " > " + "/etc/locale.conf'";
+		cout << "Language seleccted: " + languagekeyboard << endl;
+		string localeset = "arch-chroot /media/target /bin/bash -c 'echo LANG=" + languagekeyboard + ".UTF8 " + " > " + "/etc/locale.conf'";
 		string localeset1 = "arch-chroot /media/target /bin/bash -c 'echo " + languagekeyboard + " >> " + "/etc/locale.gen'";
 		system(localeset.c_str());
 		system(localeset1.c_str());
 		string localecmd = "arch-chroot /media/target /bin/bash -c 'locale-gen' ";
 		system(localecmd.c_str());
 	}
-	
+
 }
 
-void CreateUser()
-{
+void CreateUser() {
 	cout << "Username : " << endl;
 	cin >> user;
 	cout << "Password : " << endl;
 	cin >> password;
-	
-    	cout << "Creating user: " + user;
-    	string usercmd = "arch-chroot /media/target /bin/bash -c 'useradd -m' " + user;
-    	string pwdcmd = "arch-chroot /media/target /bin/bash -c 'passwd' " + password;
 
-    	system(usercmd.c_str());
-    	system(pwdcmd.c_str());
+	cout << "Creating user: " + user;
+	string usercmd = "arch-chroot /media/target /bin/bash -c 'useradd -m' " + user;
+	string pwdcmd = "arch-chroot /media/target /bin/bash -c 'passwd' " + password;
 
-    	cout << "You need this user is sudo?" << endl;
-    	cin >> issudoer;
-    	if (issudoer)
-    	{
-        	string sudocmd = "arch-choot /media/target /bin/bash -c 'usermod -aG sudo' " + user;
-        	system(sudocmd.c_str());
-    	}
-    	else
-    	{
-        	issudoer=false;
-    	}
+	system(usercmd.c_str());
+	system(pwdcmd.c_str());
+
+	cout << "You need this user is sudo?" << endl;
+	cin >> issudoer;
+	if (issudoer) {
+		string sudocmd = "arch-choot /media/target /bin/bash -c 'usermod -aG sudo' " + user;
+		system(sudocmd.c_str());
+	} else {
+		issudoer = false;
+	}
 }
 
-void AnswerCreateUser()
-{
+void AnswerCreateUser() {
 	cout << "You like create a new user? (yes/no)" << endl;
-       	cin >> ineeduser;
-	
-	if (ineeduser="yes")
-	{
+	cin >> ineeduser;
+
+	if (ineeduser == "yes") {
 		CreateUser();
-	}
-	else {
+	} else {
 		cout << "OK. not needed users." << endl;
 	}
 }
@@ -189,7 +179,7 @@ void InstallProcess() {
 		GenerateLocaleFile();
 		AnswerCreateUser();
 		cout << "Installation complete!" << endl;
-		
+
 
 
 	} else {
@@ -209,7 +199,7 @@ void InstallProcess() {
 		//cout << "FIRST COMMAND: You are right now in the new installation of DemenciaOS (chroot).\n put mkdir -v /mnt/boottemp and cp -rv /boot /mnt/boottemp\n" << endl;
 		//cout << "SECOND COMMAND: put mount /dev/sdx1 /boot or /dev/nvme0n1p1 /boot (NVMe) and grub-install --target=x86_64-efi --efi-directory=/boot\n, open an other terminal and login with root with sudo -i or sudo su and write genfstab -U /media/target/ >> /media/target/etc/fstab\n" << endl;
 		//cout << "THIRD COMMAND: put cp -rv /mnt/boottemp/boot/* /boot/  and finally. put update-grub and finally use command to exit. \n " << endl;
-    system("umount /media/target/boot");
+		system("umount /media/target/boot");
 		system("umount /media/target/");
 		GenerateLocaleFile();
 		AnswerCreateUser();
@@ -259,82 +249,46 @@ void Install() {
 	exit(0);
 #endif
 
-    if(disk=="")
-    {
-        Install();
-    }
-    else {
-            try {
-		// Iniciar CFDISK
-                cout << "Enter to gparted " + disk << endl;
-		string runapt = "apt install gparted -y";
-		system(runapt.c_str());
-                string fdiskrun = "gparted " + disk;
-                system(fdiskrun.c_str());
-                cout << "OK" << endl;
-		cout << "You do want use SWAP? (yes/no)" << endl;
-		cin >> swapoption;
-                cout << "Is EFI? (yes/no)" << endl;
-                cin >> efioption;
-		cout << "Root partition : " << endl;
-		cin >> rootpart;
-		if (rootpart=="")
-		{
-		      cout << "Root partition : " << endl;
-		      cin >> rootpart;
-		}
-		 // Comprobar si es EFI o no
-                if (efioption=="yes")
-                {
-                    isEFI = true;
-		    cout << "EFI partition : " << endl;
-		    cin >> efipart;
-                }
-                else {
-                    isEFI = false;
-                }
-		// Comprobar si usa la swap o no
-		if (swapoption=="yes")
-		{
-			usingSwap=true;
-		}
-		else {
-			usingSwap=false;
-		}
-		// Comprobar si es EFI o no
-				if(isEFI == true)
-				{
-					if (empieza_con(disk,"/dev/nvme0n1"))
-                    			{
-						cout << "NVMe Detected!" << endl;
-                        			disk = disk+"p";
-                    			} else {
-                        			disk = disk;
-                    			}
-
-					// Ejecutar metodos para el EFI
-					string runMkdirTargetDir = "mkdir /media/target/";
-    					string exec0 = "mkdir /media/target/boot/";
-					string mkbootefidir = "mkdir /media/target/boot/efi";
-    					string execfat = "mkfs.vfat -F 32 " + efipart;
-					string exec2 = "mount " + efipart + " /media/target/boot";
-					string exec3 = "mkfs.ext4 " + rootpart;
-					string exec4 = "mount " + rootpart + " /media/target";
-    					cout << "Making partitions" << endl;
-					system(runMkdirTargetDir.c_str());
-					//system(exec0.c_str());
-					//system(exec2.c_str());
-					system(mkbootefidir.c_str());
-					system(execfat.c_str());
-					system(exec4.c_str());
-					system(exec3.c_str());
-					//cout << "Installing systemd-boot..." << endl;
-					//system("apt install systemd-bootchart -y");
-					cout << "Success!" << endl;
-					InstallProcess();
-				// Si no es asi inicia las ordenes para el modo Legacy (BIOS)
-				} else {
-					disk = disk;
+	if (disk == "") {
+		Install();
+	} else {
+		try {
+			// Iniciar CFDISK
+			cout << "Enter to gparted " + disk << endl;
+			string runapt = "apt install gparted -y";
+			system(runapt.c_str());
+			string fdiskrun = "gparted " + disk;
+			system(fdiskrun.c_str());
+			cout << "OK" << endl;
+			cout << "You do want use SWAP? (yes/no)" << endl;
+			cin >> swapoption;
+			cout << "Is EFI? (yes/no)" << endl;
+			cin >> efioption;
+			cout << "Root partition : " << endl;
+			cin >> rootpart;
+			if (rootpart == "") {
+				cout << "Root partition : " << endl;
+				cin >> rootpart;
+			}
+			// Comprobar si es EFI o no
+			if (efioption == "yes") {
+				isEFI = true;
+				cout << "EFI partition : " << endl;
+				cin >> efipart;
+			} else {
+				isEFI = false;
+			}
+			// Comprobar si usa la swap o no
+			if (swapoption == "yes") {
+				usingSwap = true;
+			} else {
+				usingSwap = false;
+			}
+			// Comprobar si es EFI o no
+			if (isEFI == true) {
+				if (empieza_con(disk, "/dev/nvme0n1")) {
+					cout << "NVMe Detected!" << endl;
+					disk = disk + "p";
 				}
 
 				// Ejecutar metodos para el EFI
