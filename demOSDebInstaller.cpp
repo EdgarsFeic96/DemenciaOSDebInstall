@@ -28,7 +28,7 @@ string languagekeyboard;
 void GenerateLocaleFile()
 {
 	string exec4 = "mount " + rootpart + " /media/target";
-	cout << "What language you need for the keyboard? ex: es_MX" << endl;
+	cout << "What language you need for the keyboard? ex: es_MX.UTF8" << endl;
     	cin >> languagekeyboard;
 
     	if(languagekeyboard=="")
@@ -38,7 +38,7 @@ void GenerateLocaleFile()
     	else {
 		system(exec4.c_str());
         	cout << "Language seleccted: " + languagekeyboard << endl;
-		string localeset = "arch-chroot /media/target /bin/bash -c 'echo LANG="+languagekeyboard + ".UTF8 " + " > " + "/etc/locale.conf'";
+		string localeset = "arch-chroot /media/target /bin/bash -c 'echo LANG="+languagekeyboard + " > " + "/etc/locale.conf'";
 		string localeset1 = "arch-chroot /media/target /bin/bash -c 'echo " + languagekeyboard + " >> " + "/etc/locale.gen'";
 		system(localeset.c_str());
 		system(localeset1.c_str());
