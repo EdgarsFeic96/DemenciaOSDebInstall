@@ -1,5 +1,5 @@
 # Compiler settings
-CC = clang++
+CC = g++
 CXXFLAGS = -std=c++17 -Wall -O2
 LDFLAGS = -lncurses -lparted
 
