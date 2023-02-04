@@ -20,20 +20,17 @@ bool usingSwap; // Variable para especificar si se usa la SWAP
 bool isEFI; // Comprobar si la instalación es EFI y no.
 string languagekeyboard;
 
-
-
-
 void GenerateLocaleFile() {
 	string exec4 = "mount " + rootpart + " /media/target";
-	cout << "What language you need for the keyboard? ex: es_MX" << endl;
-	cin >> languagekeyboard;
+	cout << "What language you need for the keyboard? ex: es_MX.UTF8" << endl;
+    	cin >> languagekeyboard;
 
 	if (languagekeyboard == "") {
 		GenerateLocaleFile();
 	} else {
 		system(exec4.c_str());
-		cout << "Language seleccted: " + languagekeyboard << endl;
-		string localeset = "arch-chroot /media/target /bin/bash -c 'echo LANG=" + languagekeyboard + ".UTF8 " + " > " + "/etc/locale.conf'";
+    cout << "Language seleccted: " + languagekeyboard << endl;
+		string localeset = "arch-chroot /media/target /bin/bash -c 'echo LANG="+languagekeyboard + " > " + "/etc/locale.conf'";
 		string localeset1 = "arch-chroot /media/target /bin/bash -c 'echo " + languagekeyboard + " >> " + "/etc/locale.gen'";
 		system(localeset.c_str());
 		system(localeset1.c_str());
@@ -174,8 +171,7 @@ void InstallProcess() {
 		system("arch-chroot /media/target /bin/bash -c 'update-grub'");
 		system("genfstab -U /media/target >> /media/target/etc/fstab");
 		system("arch-chroot /media/target /bin/bash -c 'update-initramfs -u'");
-		system("umount /media/target/boot");
-		system("umount /media/target/");
+		system("arch-chroot /media/target /bin/bash -c umount /*");
 		GenerateLocaleFile();
 		AnswerCreateUser();
 		cout << "Installation complete!" << endl;
@@ -201,6 +197,7 @@ void InstallProcess() {
 		//cout << "THIRD COMMAND: put cp -rv /mnt/boottemp/boot/* /boot/  and finally. put update-grub and finally use command to exit. \n " << endl;
 		system("umount /media/target/boot");
 		system("umount /media/target/");
+    system("arch-chroot /media/target /bin/bash -c umount /*");
 		GenerateLocaleFile();
 		AnswerCreateUser();
 		cout << "Installation complete\n You can reboot with sudo reboot or systemctl reboot\n You need start update-initramfs -U in the post installation as root in case you have error with a ln command don't worry about that :D" << endl;
