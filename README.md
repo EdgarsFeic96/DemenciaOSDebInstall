@@ -5,8 +5,10 @@ Why this other installer?
 
 To avoid some kind of incompatibility with the other script based on Ubuntu.
 
+This version still in development
+
 # How to use?
 
-``make`` Thanks to Edgar for the Makefile
+``make``
 
 `` sudo ./demOSDebInstaller ``
