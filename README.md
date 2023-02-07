@@ -5,7 +5,7 @@ Why this other installer?
 
 To avoid some kind of incompatibility with the other script based on Ubuntu.
 
-This version still in development
+This version is deprecated, see the original repository.
 
 # How to use?
 
